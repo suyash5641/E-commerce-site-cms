@@ -16,6 +16,7 @@
     "@stripe/stripe-js": "^1.54.1",
     "@types/stripe": "^8.0.417",
     "better-sqlite3": "8.0.1",
+    "crypto-js": "^4.1.1",
     "strapi-stripe": "^3.4.1",
     "stripe": "^12.16.0"
   },

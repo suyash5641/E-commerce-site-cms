@@ -1,5 +1,7 @@
 ("use strict");
 // @ts-ignore
+const CryptoJS = require('crypto-js');
+// @ts-ignore
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 /**
  * order controller
@@ -30,14 +32,16 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
         })
       );
 
+  
       const session = await stripe.checkout.sessions.create({
         shipping_address_collection: { allowed_countries: ["IN"] },
         payment_method_types: ["card"],
         mode: "payment",
-        success_url: process.env.CLIENT_URL + "/success",
-        cancel_url: process.env.CLIENT_URL + "?success=false",
+        success_url: process.env.CLIENT_URL + `/payment?success=true&session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: process.env.CLIENT_URL + `/payment?success=false&session_id={CHECKOUT_SESSION_ID}`,
         line_items: lineItems,
       });
+      
 
       await strapi
         .service("api::order.order")
